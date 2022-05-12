@@ -126,11 +126,124 @@ text(pca_output_zscored$x[,c(1,2)],rownames(pca_output_zscored$x),col=cluster_co
 ##Exercise 1:
 ####Select two different distance metrics (Euclidean or 1-correlation) and two different hierarchical grouping methods (single, average, complete, ward.D), cut the tree to generate 7 clusters in each, and plot the clusters on the PC plot
 
+```{r}
+###Generate hierarchical tree
+distance_values <- as.dist(1-cor(t(data1)))
+clustering_complete <- hclust(distance_values,method = "complete")
+clustering_single <- hclust(distance_values,method = "single")
+clustering_average <- hclust(distance_values,method = "average")
+clustering_ward <- hclust(distance_values,method = "ward.D")
+#plot(clustering,hang=-1)
+
+###Cut the tree to get 7 clusters
+clusters <- cutree(clustering_complete, k= 7)
+hclust_correlation_complete_7=data.frame(cluster=clusters[clustering$order])
+
+clusters <- cutree(clustering_single, k= 7)
+hclust_correlation_single_7=data.frame(cluster=clusters[clustering$order])
+
+clusters <- cutree(clustering_average, k= 7)
+hclust_correlation_average_7=data.frame(cluster=clusters[clustering$order])
+
+clusters <- cutree(clustering_ward, k= 7)
+hclust_correlation_ward_7=data.frame(cluster=clusters[clustering$order])
+
+###Generate color vectors for each different clustering
+cluster_colors_complete=rainbow(7)[hclust_correlation_complete_7[,1]]
+names(cluster_colors_complete)=rownames(hclust_correlation_complete_7)
+
+cluster_colors_single=rainbow(7)[hclust_correlation_single_7[,1]]
+names(cluster_colors_single)=rownames(hclust_correlation_single_7)
+
+cluster_colors_average=rainbow(7)[hclust_correlation_average_7[,1]]
+names(cluster_colors_average)=rownames(hclust_correlation_average_7)
+
+cluster_colors_ward=rainbow(7)[hclust_correlation_ward_7[,1]]
+names(cluster_colors_ward)=rownames(hclust_correlation_ward_7)
+
+
+#z-score the data and then run PCA
+data1_zscored = t(scale(t(data1)))
+pca_output_zscored=prcomp(data1_zscored)
+
+#plot states for each hierarchical clustering along PC1 and PC2
+plot(pca_output_zscored$x[,c(1,2)],type='n',main="PCA, after z-scoring, complete linkage")
+text(pca_output_zscored$x[,c(1,2)],rownames(pca_output_zscored$x),col=cluster_colors_complete[rownames(pca_output_zscored$x)])
+
+plot(pca_output_zscored$x[,c(1,2)],type='n',main="PCA, after z-scoring, single linkage")
+text(pca_output_zscored$x[,c(1,2)],rownames(pca_output_zscored$x),col=cluster_colors_single[rownames(pca_output_zscored$x)])
+
+plot(pca_output_zscored$x[,c(1,2)],type='n',main="PCA, after z-scoring, average linkage")
+text(pca_output_zscored$x[,c(1,2)],rownames(pca_output_zscored$x),col=cluster_colors_average[rownames(pca_output_zscored$x)])
+
+plot(pca_output_zscored$x[,c(1,2)],type='n',main="PCA, after z-scoring, Ward's method")
+text(pca_output_zscored$x[,c(1,2)],rownames(pca_output_zscored$x),col=cluster_colors_ward[rownames(pca_output_zscored$x)])
+
+```
+
+
 
 
 
 ##Exercise 2:
 ####Select multiple numbers of clusters for k-means clustering and plot them on the PCA plot
+```{r}
+###k-means clustering, specifying 3 clusters
+set.seed(0) ###setting the random seed
+clustering_kmeans=kmeans(data1,center=3)
+kmeans_3=data.frame(cluster=clustering_kmeans$cluster[order(clustering_kmeans$cluster)])
+
+###k-means clustering, specifying 7 clusters
+set.seed(0) ###setting the random seed
+clustering_kmeans=kmeans(data1,center=7)
+kmeans_7=data.frame(cluster=clustering_kmeans$cluster[order(clustering_kmeans$cluster)])
+
+###k-means clustering, specifying 10 clusters
+set.seed(0) ###setting the random seed
+clustering_kmeans=kmeans(data1,center=10)
+kmeans_10=data.frame(cluster=clustering_kmeans$cluster[order(clustering_kmeans$cluster)])
+
+###k-means clustering, specifying 12 clusters
+set.seed(0) ###setting the random seed
+clustering_kmeans=kmeans(data1,center=12)
+kmeans_12=data.frame(cluster=clustering_kmeans$cluster[order(clustering_kmeans$cluster)])
+
+
+###create color vectors
+cluster_colors_3=rainbow(max(kmeans_3))[kmeans_3[,1]]
+names(cluster_colors_3)=rownames(kmeans_3)
+
+cluster_colors_7=rainbow(max(kmeans_7))[kmeans_7[,1]]
+names(cluster_colors_7)=rownames(kmeans_7)
+
+cluster_colors_10=rainbow(max(kmeans_10))[kmeans_10[,1]]
+names(cluster_colors_10)=rownames(kmeans_10)
+
+cluster_colors_12=rainbow(max(kmeans_12))[kmeans_12[,1]]
+names(cluster_colors_12)=rownames(kmeans_12)
+
+#z-score the data and then run PCA
+data1_zscored = t(scale(t(data1)))
+pca_output_zscored=prcomp(data1_zscored)
+
+#plot states for each hierarchical clustering along PC1 and PC2
+plot(pca_output_zscored$x[,c(1,2)],type='n',main="PCA, after z-scoring, k-means with 3 clusters")
+text(pca_output_zscored$x[,c(1,2)],rownames(pca_output_zscored$x),col=cluster_colors_3[rownames(pca_output_zscored$x)])
+
+plot(pca_output_zscored$x[,c(1,2)],type='n',main="PCA, after z-scoring, k-means with 7 clusters")
+text(pca_output_zscored$x[,c(1,2)],rownames(pca_output_zscored$x),col=cluster_colors_7[rownames(pca_output_zscored$x)])
+
+plot(pca_output_zscored$x[,c(1,2)],type='n',main="PCA, after z-scoring, k-means with 10 clusters")
+text(pca_output_zscored$x[,c(1,2)],rownames(pca_output_zscored$x),col=cluster_colors_10[rownames(pca_output_zscored$x)])
+
+plot(pca_output_zscored$x[,c(1,2)],type='n',main="PCA, after z-scoring, k-means with 12 clusters")
+text(pca_output_zscored$x[,c(1,2)],rownames(pca_output_zscored$x),col=cluster_colors_12[rownames(pca_output_zscored$x)])
+
+
+
+
+```
+
 
 
 
