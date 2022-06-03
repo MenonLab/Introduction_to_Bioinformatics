@@ -1,0 +1,148 @@
+---
+title: "R intro"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+```{r}
+getwd()
+```
+
+```{r}
+
+```
+
+```{r}
+# will not print anything as its a comment
+
+print("this will be printed")
+```
+
+
+### Arithmatics
+```{r}
+#Arithmatics. +,-,/, * are called operators
+2 + 2
+2 - 2
+15 / 2
+5 * 4
+2 + 2 *3 # when using multiple operators calculations using BODMAS
+(2 + 2) * 3
+```
+
+### R: VARIABLES
+A variable is any text (letter/word/alpha-numeric) which stores some value
+We use assignment operatr '<-' to pass a value to the variable
+```{r}
+# Variables
+x <- 4
+some_number <- 20
+```
+
+
+
+```{r}
+# add two variables
+x+some_number
+```
+
+```{r}
+# change the value of a variable
+x=100
+x
+x=x+2
+x
+```
+
+
+
+### R: Vectors
+Vectors are an collection of some data elements.
+Vectors are also a form of variable but they contain a list of values. 
+```{r}
+ 
+some_vector1 <- c(1,2,3,4,5,6) # c is a 'function' that combines its arguments into a vector
+some_vector1
+some_vector2 <- 1:6 # a shortcut
+some_vector2
+
+series1 <- seq(from = 2, to = 20, by = 4) #series1 is a vector created by function seq
+series1
+
+```
+
+```{r}
+?seq
+```
+
+```{r}
+#we can perform operations on vectors such as addition, multiplication etc
+x <- 1:5
+x
+y= x*2
+y
+```
+
+```{r}
+# add the two vectors
+joined_vectors <- some_vector1 + some_vector2 # the vectors will get added element-wise
+joined_vectors
+```
+
+### indexing and manipulations
+
+ - Square brackets [ ] - used for indexing (position)
+ - Parentheses () - used in functions to provide arguements
+```{r}
+
+x=seq(1,12,2)
+x
+
+
+```
+```{r}
+x[3] # 3 here is the index value, i.e 3rd element in x
+x[c(3,4)]
+## removing an element
+x[-3] ## is x changed?
+y= x[-4]
+y
+
+which(x == 7)
+```
+
+### character vectors: Instead of numbers we use strings
+```{r}
+char_vec1 <- c("Archana", "Hanane", "Pallavi", "John")
+char_vec1
+
+```
+
+### R: FUNCTIONS
+Functions are a form of task performed on input 'arguments'
+```{r}
+
+## seq function is creating a series of numbers on the basis of specified parameters. 
+x <- seq(from = 2, to = 20, by = 4)
+x
+length(x) # length is a function
+```
+
+### getting help
+
+```{r}
+
+?seq
+```
+
+# know the version
+```{r}
+#knowing the R version (plus the version of other attached packages)
+sessionInfo() 
+```
+```{r}
+# preview or knit the file in pdf or html document
+```
+
+
